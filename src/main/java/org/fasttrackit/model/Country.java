@@ -30,8 +30,8 @@ public class Country {
     @Column
     private long area;
     @Column
-    private final String continent;
+    private  String continent;
     @Transient
-    private final List<String> neighbours;
+    private  List<String> neighbours;
 
 }

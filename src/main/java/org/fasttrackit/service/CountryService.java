@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +28,11 @@ public class CountryService {
     }
 
     public List<Country> getAllCountries() {
-        return countryList;
+        return StreamSupport.stream(countryRepository.findAll().spliterator(), false).toList();
     }
 
     public List<Country> getByContinent(String continent) {
-        return countryList.stream()
+        return getAllCountries().stream()
                 .filter(country -> country.getContinent().equalsIgnoreCase(continent))
                 .toList();
     }
@@ -41,7 +42,7 @@ public class CountryService {
         return getAllCountries().stream()
                 .filter(country -> country.getId() == id)
                 .findFirst()
-                .orElseThrow(() -> new ResourcesNotFound("country not found"));
+                .orElseThrow(() -> new ResourcesNotFound("country not found", -1));
     }
 
     public Country delete(long id) {
